@@ -29,4 +29,8 @@ git branch master c3fc1f2c38820d17f3bc91b16e9d609632d72297
 for branch in `git branch -r --merged | grep -v HEAD`; do echo -e `git show --format="%ci" $branch | head -n 1` \\t'git branch -D -r' $branch; done | sort -r |sed s/^.*\\t// >CleanBranches.sh
 for branch in `git branch -r --merged | grep -v HEAD`; do echo -e `git show --format="%ci" $branch | head -n 1` \\t'git push origin :refs/heads/'$branch; done | sort -r |sed s/^.*\\t\// | sed s/origin\\/// >>CleanBranches.sh
 
-for branch in `git branch -r --merged | grep -v HEAD | sed 's/origin//'`; do echo -e `git show --format="%ci %cr %an" $branch | head -n 1` \\t$branch; done | sort -r
+#Excludes Master and Develop from the list
+for branch in `git branch -r --merged | grep -v HEAD |grep -v master |grep -v develop`; do echo -e `git show --format="%ci" $branch | head -n 1` \\t'git branch -D -r' $branch; done | sort -r |sed s/^.*\\t// >CleanBranches.sh
+for branch in `git branch -r --merged | grep -v HEAD |grep -v master |grep -v develop`; do echo -e `git show --format="%ci" $branch | head -n 1` \\t'git push origin :refs/heads/'$branch; done | sort -r |sed s/^.*\\t\// | sed s/origin\\/// >>CleanBranches.sh
+
+
