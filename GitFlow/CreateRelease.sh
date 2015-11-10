@@ -25,12 +25,13 @@ project[11]='Smg.Common.Logging'
 project[12]='Smg.Common.E3.Connect'
 
 if [ "$Action" == '' ]  && [ "$SourceBranch" == '' ] && [ "$ReleaseName" == '' ]; then
-	echo "usage: CreateRelease.sh <create|publish> <sourceBranch> <releaseName>"
+	echo "usage: CreateRelease.sh <create|publish> <sourceBranch> <releaseName>. You must include the text 'release/' or 'hotfix/' with the <releaseName>"
+	echo "*** Make sure you specify a <sourceBranch> of 'master' for hotfixes, and 'develop' for releases ***"
 	exit
 fi
 
 if [ "$Action" == 'create' ]; then
-	echo "Creating release/$ReleaseName from $SourceBranch."
+	echo "Creating $ReleaseName from $SourceBranch."
 	for i in "${project[@]}"
 	do
 		RemoteBranch=$SourceBranch
@@ -43,17 +44,17 @@ if [ "$Action" == 'create' ]; then
 		fi
 		git checkout $RemoteBranch
 		git pull origin $RemoteBranch -v
-		git branch release/$ReleaseName -v
+		git branch $ReleaseName -v
 		popd
 	done
 	echo "*** Please inspect your staged commits before publishing. ***"
 elif [ "$Action" == 'publish' ]; then
-	echo "Publishing release named: release/$ReleaseName"
+	echo "Publishing release named: $ReleaseName"
 	for i in "${project[@]}"
 	do
 		echo "Repo: ${i}"
 		pushd "${i}"
-		git push origin release/$ReleaseName -v
+		git push origin $ReleaseName -v
 		popd
 	done
 else

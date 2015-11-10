@@ -1,0 +1,14 @@
+# What if I delete a Remote branch like Master?
+#   If you still have local copy of the branch simply push it up again.
+#
+#   If not then there are a couple options:
+#   1. Create a new "master" branch and push it up
+
+       git checkout -b master <SHA or commit id>
+       git push origin master
+
+#   2. This does this does the same without doing a checkout (not tested)
+
+       git branch master <SHA or commit id>
+       git push origin master
+
